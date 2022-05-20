@@ -63,18 +63,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 new Expanded(
-                  child: new Container(
-                    margin: EdgeInsets.only(left: 16),
-                    child: new Text(
-                      "Search your notes",
-                      style: new TextStyle(
-                          color: white.withOpacity(0.5), fontSize: 16),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {});
+                    },
+                    child: new Container(
+                      margin: EdgeInsets.only(left: 16),
+                      child: new Text(
+                        "Search your notes",
+                        style: new TextStyle(
+                            color: white.withOpacity(0.5), fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
-                new Icon(
-                  Icons.grid_view_outlined,
-                  color: primaryColor,
+                new InkWell(
+                  onTap: () {
+                    setState(() {});
+                  },
+                  child: new Icon(
+                    Icons.grid_view_outlined,
+                    color: primaryColor,
+                  ),
                 ),
                 new Container(
                   margin: EdgeInsets.only(left: 8),
@@ -94,7 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: cardColor,
         onPressed: () {
           Navigator.of(context).push(new MaterialPageRoute(
-            builder: (context) => new EditScreen(),
+            builder: (context) => new EditScreen(
+              notes: null,
+            ),
           ));
         },
         child: new Icon(
