@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_keep_notes_clone/screens/edit_screen.dart';
 import 'package:google_keep_notes_clone/screens/home_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
 import 'package:google_keep_notes_clone/widgets/navigation_drawer.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Google Keep Notes',
       home: const MyHomePage(),
+      theme: new ThemeData.dark().copyWith(scaffoldBackgroundColor: bgColor),
     );
   }
 }
@@ -33,7 +35,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _navigationDrawerKey,
-      backgroundColor: bgColor,
       appBar: new PreferredSize(
         preferredSize: Size.fromHeight(75),
         child: new SafeArea(
@@ -91,8 +92,15 @@ class _MyHomePageState extends State<MyHomePage> {
       body: new HomeScreen(),
       floatingActionButton: new FloatingActionButton(
         backgroundColor: cardColor,
-        onPressed: () {},
-        child: new Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(new MaterialPageRoute(
+            builder: (context) => new EditScreen(),
+          ));
+        },
+        child: new Icon(
+          Icons.add,
+          color: primaryColor,
+        ),
       ),
     );
   }
