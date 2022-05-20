@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_keep_notes_clone/screens/home_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
 import 'package:google_keep_notes_clone/widgets/navigation_drawer.dart';
 
@@ -87,6 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       drawer: new NavigationDrawer(),
+      body: new HomeScreen(),
+      floatingActionButton: new FloatingActionButton(
+        backgroundColor: cardColor,
+        onPressed: () {},
+        child: new Icon(Icons.add),
+      ),
     );
   }
 }
