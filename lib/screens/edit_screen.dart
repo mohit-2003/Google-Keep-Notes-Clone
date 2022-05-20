@@ -15,7 +15,6 @@ class _EditScreenState extends State<EditScreen> {
   bool isPinned = false;
   final _titleController = new TextEditingController();
   final _notesController = new TextEditingController();
-  // Notes? notes;
   final NotesDatabase db = NotesDatabase.instance;
   @override
   void initState() {
@@ -75,7 +74,11 @@ class _EditScreenState extends State<EditScreen> {
                 style: Theme.of(context).textTheme.caption,
               ),
             ),
-            new IconButton(onPressed: () {}, icon: new Icon(Icons.more_vert)),
+            new IconButton(
+                onPressed: () {
+                  showBottomSheet();
+                },
+                icon: new Icon(Icons.more_vert)),
           ],
         ),
       ),
@@ -149,6 +152,53 @@ class _EditScreenState extends State<EditScreen> {
         _notesController.text = widget.notes["notes"];
         isPinned = widget.notes["isPinned"] == 1;
       });
+    }
+  }
+
+  showBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new ListTile(
+                onTap: () {
+                  deleteNotes();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                leading: new Icon(Icons.delete_outline),
+                title: new Text("Delete"),
+              ),
+              new ListTile(
+                onTap: () {},
+                leading: new Icon(Icons.filter_none),
+                title: new Text("Make a copy"),
+              ),
+              new ListTile(
+                onTap: () {},
+                leading: new Icon(Icons.share_outlined),
+                title: new Text("Send"),
+              ),
+              new ListTile(
+                onTap: () {},
+                leading: new Icon(Icons.person_add),
+                title: new Text("Collaborator"),
+              ),
+              new ListTile(
+                onTap: () {},
+                leading: new Icon(Icons.label_outline),
+                title: new Text("Lebels"),
+              )
+            ],
+          );
+        });
+  }
+
+  void deleteNotes() async {
+    if (widget.notes != null) {
+      await db.deleteNotes(widget.notes["id"]);
     }
   }
 }

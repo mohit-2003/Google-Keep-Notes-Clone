@@ -65,12 +65,12 @@ class NotesDatabase {
       print("updated");
   }
 
-  Future<void> deleteNotes(Notes notes) async {
+  Future<void> deleteNotes(int notesId) async {
     Database db = await instance.database;
     await db.delete(
       "Notes",
       where: "id = ?",
-      whereArgs: [notes.id],
+      whereArgs: [notesId],
     );
   }
 
