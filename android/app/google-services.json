@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "882705339524",
+    "project_id": "keep-notes-clone-faefc",
+    "storage_bucket": "keep-notes-clone-faefc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882705339524:android:919c8651cf0ecacd171ed1",
+        "android_client_info": {
+          "package_name": "com.example.google_keep_notes_clone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882705339524-a9c4k77u3qq16lbuodd9abnhs6j05nsi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbS2KCvU_9VADT-3g3OmqKBF-agqQhyUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882705339524-a9c4k77u3qq16lbuodd9abnhs6j05nsi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

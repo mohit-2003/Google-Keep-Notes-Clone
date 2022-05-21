@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_keep_notes_clone/database/sqlite_database/NotesDatabase.dart';
 import 'package:google_keep_notes_clone/database/sqlite_database/models/notes.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
+import 'package:intl/intl.dart';
 
 class EditScreen extends StatefulWidget {
   final notes;
@@ -69,7 +70,7 @@ class _EditScreenState extends State<EditScreen> {
                 onPressed: () {}, icon: new Icon(Icons.color_lens_outlined)),
             new Expanded(
               child: new Text(
-                "Edited 6:48 AM",
+                "Edited ${DateFormat.jm().format(DateTime.parse(widget.notes["editedTime"]))}",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption,
               ),
