@@ -14,6 +14,8 @@ class EditScreen extends StatefulWidget {
 
 class _EditScreenState extends State<EditScreen> {
   bool isPinned = false;
+  var editedTime =
+      DateFormat.jm().format(DateTime.parse(DateTime.now().toString()));
   final _titleController = new TextEditingController();
   final _notesController = new TextEditingController();
   final NotesDatabase db = NotesDatabase.instance;
@@ -70,7 +72,7 @@ class _EditScreenState extends State<EditScreen> {
                 onPressed: () {}, icon: new Icon(Icons.color_lens_outlined)),
             new Expanded(
               child: new Text(
-                "Edited ${DateFormat.jm().format(DateTime.parse(widget.notes["editedTime"]))}",
+                "Edited ${editedTime}",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption,
               ),
@@ -88,9 +90,14 @@ class _EditScreenState extends State<EditScreen> {
         child: new Column(
           children: [
             new TextField(
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontWeight: FontWeight.normal),
+              maxLines: null,
               controller: _titleController,
               cursorColor: Colors.grey,
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.multiline,
               decoration: new InputDecoration(
                   hintText: "Title",
                   hintStyle: Theme.of(context)
@@ -99,17 +106,20 @@ class _EditScreenState extends State<EditScreen> {
                       .copyWith(color: Colors.grey),
                   border: InputBorder.none),
             ),
-            new TextField(
-              controller: _notesController,
-              cursorColor: Colors.grey,
-              keyboardType: TextInputType.text,
-              decoration: new InputDecoration(
-                  hintText: "Note",
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(color: Colors.grey),
-                  border: InputBorder.none),
+            new Expanded(
+              child: new TextField(
+                maxLines: 99999,
+                controller: _notesController,
+                cursorColor: Colors.grey,
+                keyboardType: TextInputType.multiline,
+                decoration: new InputDecoration(
+                    hintText: "Note",
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Colors.grey),
+                    border: InputBorder.none),
+              ),
             )
           ],
         ),
@@ -152,6 +162,8 @@ class _EditScreenState extends State<EditScreen> {
         _titleController.text = widget.notes["title"];
         _notesController.text = widget.notes["notes"];
         isPinned = widget.notes["isPinned"] == 1;
+        editedTime =
+            DateFormat.jm().format(DateTime.parse(widget.notes["editedTime"]));
       });
     }
   }
