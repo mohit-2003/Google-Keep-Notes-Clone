@@ -72,7 +72,7 @@ class _EditScreenState extends State<EditScreen> {
                 onPressed: () {}, icon: new Icon(Icons.color_lens_outlined)),
             new Expanded(
               child: new Text(
-                "Edited ${editedTime}",
+                "Edited $editedTime",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption,
               ),
@@ -110,6 +110,7 @@ class _EditScreenState extends State<EditScreen> {
               child: new TextField(
                 maxLines: 99999,
                 controller: _notesController,
+                autofocus: true,
                 cursorColor: Colors.grey,
                 keyboardType: TextInputType.multiline,
                 decoration: new InputDecoration(
