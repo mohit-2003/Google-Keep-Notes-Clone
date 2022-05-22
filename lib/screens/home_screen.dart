@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_keep_notes_clone/database/firebase/google_sign_in.dart';
 import 'package:google_keep_notes_clone/screens/edit_screen.dart';
 import 'package:google_keep_notes_clone/screens/loading_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
@@ -7,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import '../database/sqlite_database/NotesDatabase.dart';
-import '../database/sqlite_database/firebase/google_sign_in.dart';
 import '../widgets/navigation_drawer.dart';
 
 class HomeScreen extends StatefulWidget {

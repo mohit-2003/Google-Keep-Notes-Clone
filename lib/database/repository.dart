@@ -1,5 +1,5 @@
+import 'package:google_keep_notes_clone/database/firebase/firestore_database.dart';
 import 'package:google_keep_notes_clone/database/sqlite_database/NotesDatabase.dart';
-import 'package:google_keep_notes_clone/database/sqlite_database/firebase/firestore_database.dart';
 import 'package:google_keep_notes_clone/database/sqlite_database/models/notes.dart';
 
 class Repository {
