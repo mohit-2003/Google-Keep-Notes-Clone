@@ -1,9 +1,11 @@
+import 'package:animations/animations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_keep_notes_clone/database/firebase/google_sign_in.dart';
 import 'package:google_keep_notes_clone/screens/edit_screen.dart';
 import 'package:google_keep_notes_clone/screens/loading_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
+import 'package:google_keep_notes_clone/widgets/item.dart';
 import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -215,62 +217,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               new Container(
-                                margin: EdgeInsets.symmetric(horizontal: 8),
-                                child: new StaggeredGridView.countBuilder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: otherNotesList!.length,
-                                  shrinkWrap: true,
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 8,
-                                  staggeredTileBuilder: (index) =>
-                                      StaggeredTile.fit(2),
-                                  crossAxisCount: isListViewItem ? 2 : 4,
-                                  itemBuilder: (context, index) {
-                                    return new InkWell(
-                                      onTap: () => Navigator.of(context)
-                                          .push(new MaterialPageRoute(
-                                        builder: (context) => new EditScreen(
-                                            notes: otherNotesList![index]),
-                                      )),
-                                      child: new Container(
-                                        padding: EdgeInsets.all(16),
-                                        decoration: new BoxDecoration(
-                                            border: Border.all(
-                                              color: white.withOpacity(0.4),
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        child: new Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            new Text(
-                                              otherNotesList![index]["title"],
-                                              maxLines: 8,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: new TextStyle(
-                                                  color: primaryColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18),
-                                            ),
-                                            new SizedBox(
-                                              height: 8,
-                                            ),
-                                            new Text(
-                                              otherNotesList![index]["notes"],
-                                              maxLines: 10,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: new TextStyle(
-                                                  color: primaryColor,
-                                                  fontSize: 16),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              )
+                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  child: new StaggeredGridView.countBuilder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: otherNotesList!.length,
+                                    shrinkWrap: true,
+                                    mainAxisSpacing: 8,
+                                    crossAxisSpacing: 8,
+                                    staggeredTileBuilder: (index) =>
+                                        StaggeredTile.fit(2),
+                                    crossAxisCount: isListViewItem ? 2 : 4,
+                                    itemBuilder: (context, index) =>
+                                        new OpenContainer(
+                                            transitionDuration:
+                                                new Duration(milliseconds: 600),
+                                            openColor: Colors.transparent,
+                                            closedColor: Colors.transparent,
+                                            closedBuilder: (context, action) =>
+                                                new NotesItem(
+                                                    notes:
+                                                        otherNotesList![index],
+                                                    onClicked: action),
+                                            openBuilder: (context, _) =>
+                                                new EditScreen(
+                                                    notes: otherNotesList![
+                                                        index])),
+                                  ))
                             ]),
                       ),
                 floatingActionButton: new FloatingActionButton(
