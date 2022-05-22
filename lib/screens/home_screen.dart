@@ -52,6 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return new LoadingScreen();
               }
+              // if (snapshot.hasData) {
+              //   print("Home " + snapshot.data.toString());
+              // }
               return new Scaffold(
                 key: _navigationDrawerKey,
                 appBar: new PreferredSize(
@@ -128,77 +131,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 drawer: new NavigationDrawer(),
                 body: otherNotesList!.isEmpty && pinnedNotesList!.isEmpty
                     ? new Center(child: new Text("Empty"))
-                    : new SingleChildScrollView(
-                        child: new Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              new Visibility(
-                                visible: pinnedNotesList!.isNotEmpty,
-                                child: new Container(
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
-                                  child: new Text(
-                                    "Pinned",
-                                    style: new TextStyle(
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold),
+                    : new RefreshIndicator(
+                        onRefresh: () async {
+                          await getNotesList();
+                        },
+                        child: new SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                new Visibility(
+                                  visible: pinnedNotesList!.isNotEmpty,
+                                  child: new Container(
+                                    padding: EdgeInsets.all(16),
+                                    margin: EdgeInsets.symmetric(horizontal: 8),
+                                    child: new Text(
+                                      "Pinned",
+                                      style: new TextStyle(
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              new Container(
-                                margin: EdgeInsets.symmetric(horizontal: 8),
-                                child: new StaggeredGridView.countBuilder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: pinnedNotesList!.length,
-                                    shrinkWrap: true,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 8,
-                                    crossAxisCount: isListViewItem ? 2 : 4,
-                                    staggeredTileBuilder: (index) =>
-                                        StaggeredTile.fit(2),
-                                    itemBuilder: (context, index) {
-                                      return new OpenContainer(
-                                          transitionDuration:
-                                              new Duration(milliseconds: 600),
-                                          openColor: Colors.transparent,
-                                          closedColor: Colors.transparent,
-                                          closedBuilder: (context, action) =>
-                                              new NotesItem(
-                                                  notes:
-                                                      pinnedNotesList![index],
-                                                  onClicked: action),
-                                          openBuilder: (context, _) =>
-                                              new EditScreen(
-                                                  notes:
-                                                      pinnedNotesList![index]));
-                                    }),
-                              ),
-                              new Visibility(
-                                visible: otherNotesList!.isNotEmpty,
-                                child: new Container(
-                                  padding: EdgeInsets.all(16),
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
-                                  child: new Text(
-                                    "Others",
-                                    style: new TextStyle(
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                              new Container(
+                                new Container(
                                   margin: EdgeInsets.symmetric(horizontal: 8),
                                   child: new StaggeredGridView.countBuilder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: otherNotesList!.length,
-                                    shrinkWrap: true,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 8,
-                                    staggeredTileBuilder: (index) =>
-                                        StaggeredTile.fit(2),
-                                    crossAxisCount: isListViewItem ? 2 : 4,
-                                    itemBuilder: (context, index) =>
-                                        new OpenContainer(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: pinnedNotesList!.length,
+                                      shrinkWrap: true,
+                                      mainAxisSpacing: 8,
+                                      crossAxisSpacing: 8,
+                                      crossAxisCount: isListViewItem ? 2 : 4,
+                                      staggeredTileBuilder: (index) =>
+                                          StaggeredTile.fit(2),
+                                      itemBuilder: (context, index) {
+                                        return new OpenContainer(
                                             transitionDuration:
                                                 new Duration(milliseconds: 600),
                                             openColor: Colors.transparent,
@@ -206,14 +173,57 @@ class _HomeScreenState extends State<HomeScreen> {
                                             closedBuilder: (context, action) =>
                                                 new NotesItem(
                                                     notes:
-                                                        otherNotesList![index],
+                                                        pinnedNotesList![index],
                                                     onClicked: action),
                                             openBuilder: (context, _) =>
                                                 new EditScreen(
-                                                    notes: otherNotesList![
-                                                        index])),
-                                  ))
-                            ]),
+                                                    notes: pinnedNotesList![
+                                                        index]));
+                                      }),
+                                ),
+                                new Visibility(
+                                  visible: otherNotesList!.isNotEmpty,
+                                  child: new Container(
+                                    padding: EdgeInsets.all(16),
+                                    margin: EdgeInsets.symmetric(horizontal: 8),
+                                    child: new Text(
+                                      "Others",
+                                      style: new TextStyle(
+                                          color: primaryColor,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                new Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 8),
+                                    child: new StaggeredGridView.countBuilder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: otherNotesList!.length,
+                                      shrinkWrap: true,
+                                      mainAxisSpacing: 8,
+                                      crossAxisSpacing: 8,
+                                      staggeredTileBuilder: (index) =>
+                                          StaggeredTile.fit(2),
+                                      crossAxisCount: isListViewItem ? 2 : 4,
+                                      itemBuilder: (context, index) =>
+                                          new OpenContainer(
+                                              transitionDuration: new Duration(
+                                                  milliseconds: 600),
+                                              openColor: Colors.transparent,
+                                              closedColor: Colors.transparent,
+                                              closedBuilder: (context,
+                                                      action) =>
+                                                  new NotesItem(
+                                                      notes: otherNotesList![
+                                                          index],
+                                                      onClicked: action),
+                                              openBuilder: (context, _) =>
+                                                  new EditScreen(
+                                                      notes: otherNotesList![
+                                                          index])),
+                                    ))
+                              ]),
+                        ),
                       ),
                 floatingActionButton: new FloatingActionButton(
                   backgroundColor: cardColor,
