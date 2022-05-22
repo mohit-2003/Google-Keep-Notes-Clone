@@ -157,50 +157,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                     staggeredTileBuilder: (index) =>
                                         StaggeredTile.fit(2),
                                     itemBuilder: (context, index) {
-                                      return new InkWell(
-                                        onTap: () => Navigator.of(context)
-                                            .push(new MaterialPageRoute(
-                                          builder: (context) => new EditScreen(
-                                              notes: pinnedNotesList![index]),
-                                        )),
-                                        child: new Container(
-                                          padding: EdgeInsets.all(16),
-                                          decoration: new BoxDecoration(
-                                              border: Border.all(
-                                                color: white.withOpacity(0.4),
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          child: new Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              new Text(
-                                                pinnedNotesList![index]
-                                                    ["title"],
-                                                maxLines: 8,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: new TextStyle(
-                                                    color: primaryColor,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18),
-                                              ),
-                                              new SizedBox(
-                                                height: 8,
-                                              ),
-                                              new Text(
-                                                pinnedNotesList![index]
-                                                    ["notes"],
-                                                maxLines: 10,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: new TextStyle(
-                                                    color: primaryColor,
-                                                    fontSize: 16),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
+                                      return new OpenContainer(
+                                          transitionDuration:
+                                              new Duration(milliseconds: 600),
+                                          openColor: Colors.transparent,
+                                          closedColor: Colors.transparent,
+                                          closedBuilder: (context, action) =>
+                                              new NotesItem(
+                                                  notes: otherNotesList![index],
+                                                  onClicked: action),
+                                          openBuilder: (context, _) =>
+                                              new EditScreen(
+                                                  notes:
+                                                      otherNotesList![index]));
                                     }),
                               ),
                               new Visibility(
