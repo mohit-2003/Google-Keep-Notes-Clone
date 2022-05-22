@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_keep_notes_clone/screens/settings_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
 
 class NavigationDrawer extends StatelessWidget {
@@ -71,7 +72,11 @@ class NavigationDrawer extends StatelessWidget {
                 color: primaryColor,
               ),
               "Settings",
-              () {},
+              () {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (context) => new SettingScreen()));
+              },
             ),
             RowItems(
               new Icon(
@@ -87,8 +92,8 @@ class NavigationDrawer extends StatelessWidget {
     );
   }
 
-  Widget RowItems(Icon icon, String title, VoidCallback? onClicked) {
-    return Container(
+  Widget RowItems(Icon icon, String title, VoidCallback onClicked) {
+    return new Container(
       margin: EdgeInsets.only(left: 20, right: 10),
       child: TextButton(
           // style: ButtonStyle(
@@ -101,9 +106,9 @@ class NavigationDrawer extends StatelessWidget {
           //           bottomRight: Radius.circular(50)),
           //     ))),
           onPressed: () {
-            onClicked;
+            onClicked();
           },
-          child: Container(
+          child: new Container(
             padding: EdgeInsets.all(5),
             child: Row(
               children: [

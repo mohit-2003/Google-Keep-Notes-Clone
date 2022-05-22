@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_keep_notes_clone/database/firebase/google_sign_in.dart';
 import 'package:google_keep_notes_clone/screens/home_screen.dart';
-import 'package:google_keep_notes_clone/screens/settings_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +35,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return new SettingScreen();
+    return new HomeScreen();
   }
 }
