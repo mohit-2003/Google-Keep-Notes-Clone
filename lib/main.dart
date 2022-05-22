@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_keep_notes_clone/database/sqlite_database/firebase_database/google_sign_in.dart';
 import 'package:google_keep_notes_clone/screens/home_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+
+import 'database/sqlite_database/firebase/google_sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

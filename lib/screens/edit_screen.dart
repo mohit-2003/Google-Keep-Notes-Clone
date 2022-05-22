@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_keep_notes_clone/database/repository.dart';
 import 'package:google_keep_notes_clone/database/sqlite_database/NotesDatabase.dart';
 import 'package:google_keep_notes_clone/database/sqlite_database/models/notes.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class EditScreen extends StatefulWidget {
   final notes;
@@ -18,7 +20,8 @@ class _EditScreenState extends State<EditScreen> {
       DateFormat.jm().format(DateTime.parse(DateTime.now().toString()));
   final _titleController = new TextEditingController();
   final _notesController = new TextEditingController();
-  final NotesDatabase db = NotesDatabase.instance;
+  // final NotesDatabase db = NotesDatabase.instance;
+  final Repository repository = new Repository();
   @override
   void initState() {
     super.initState();
@@ -34,95 +37,101 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: bgColor,
-        shadowColor: Colors.transparent,
-        leading: new IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            saveNotes();
-          },
-          icon: new Icon(Icons.arrow_back),
-        ),
-        actions: [
-          new IconButton(
-              onPressed: () {
-                setState(() {
-                  isPinned = !isPinned;
-                });
-              },
-              icon: new Icon(
-                  isPinned ? Icons.push_pin : Icons.push_pin_outlined)),
-          new IconButton(
-              onPressed: () {}, icon: new Icon(Icons.add_alert_outlined)),
-          new IconButton(
-              onPressed: () {}, icon: new Icon(Icons.archive_outlined)),
-        ],
-      ),
-      bottomNavigationBar: new BottomAppBar(
-        color: bgColor,
-        child: new Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            new IconButton(
-                onPressed: () {}, icon: new Icon(Icons.add_box_outlined)),
-            new IconButton(
-                onPressed: () {}, icon: new Icon(Icons.color_lens_outlined)),
-            new Expanded(
-              child: new Text(
-                "Edited $editedTime",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ),
+    return new WillPopScope(
+      onWillPop: () async {
+        Navigator.of(context).pop();
+        saveNotes();
+        return true;
+      },
+      child: new Scaffold(
+        appBar: new AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: bgColor,
+          shadowColor: Colors.transparent,
+          leading: new IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              saveNotes();
+            },
+            icon: new Icon(Icons.arrow_back),
+          ),
+          actions: [
             new IconButton(
                 onPressed: () {
-                  showBottomSheet();
+                  setState(() {
+                    isPinned = !isPinned;
+                  });
                 },
-                icon: new Icon(Icons.more_vert)),
+                icon: new Icon(
+                    isPinned ? Icons.push_pin : Icons.push_pin_outlined)),
+            new IconButton(
+                onPressed: () {}, icon: new Icon(Icons.add_alert_outlined)),
+            new IconButton(
+                onPressed: () {}, icon: new Icon(Icons.archive_outlined)),
           ],
         ),
-      ),
-      body: new Container(
-        margin: EdgeInsets.symmetric(horizontal: 24),
-        child: new Column(
-          children: [
-            new TextField(
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(fontWeight: FontWeight.normal),
-              maxLines: null,
-              controller: _titleController,
-              cursorColor: Colors.grey,
-              keyboardType: TextInputType.multiline,
-              decoration: new InputDecoration(
-                  hintText: "Title",
-                  hintStyle: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.grey),
-                  border: InputBorder.none),
-            ),
-            new Expanded(
-              child: new TextField(
-                maxLines: 99999,
-                controller: _notesController,
-                autofocus: true,
+        bottomNavigationBar: new BottomAppBar(
+          color: bgColor,
+          child: new Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              new IconButton(
+                  onPressed: () {}, icon: new Icon(Icons.add_box_outlined)),
+              new IconButton(
+                  onPressed: () {}, icon: new Icon(Icons.color_lens_outlined)),
+              new Expanded(
+                child: new Text(
+                  "Edited $editedTime",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ),
+              new IconButton(
+                  onPressed: () {
+                    showBottomSheet();
+                  },
+                  icon: new Icon(Icons.more_vert)),
+            ],
+          ),
+        ),
+        body: new Container(
+          margin: EdgeInsets.symmetric(horizontal: 24),
+          child: new Column(
+            children: [
+              new TextField(
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(fontWeight: FontWeight.normal),
+                maxLines: null,
+                controller: _titleController,
                 cursorColor: Colors.grey,
                 keyboardType: TextInputType.multiline,
                 decoration: new InputDecoration(
-                    hintText: "Note",
+                    hintText: "Title",
                     hintStyle: Theme.of(context)
                         .textTheme
-                        .titleMedium!
+                        .titleLarge!
                         .copyWith(color: Colors.grey),
                     border: InputBorder.none),
               ),
-            )
-          ],
+              new Expanded(
+                child: new TextField(
+                  maxLines: 99999,
+                  controller: _notesController,
+                  cursorColor: Colors.grey,
+                  keyboardType: TextInputType.multiline,
+                  decoration: new InputDecoration(
+                      hintText: "Note",
+                      hintStyle: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(color: Colors.grey),
+                      border: InputBorder.none),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -140,7 +149,7 @@ class _EditScreenState extends State<EditScreen> {
             addedTime: new DateTime.now().toIso8601String(),
             editedTime: new DateTime.now().toIso8601String(),
             isPinned: isPinned);
-        await db.insertNotes(notes);
+        await repository.insertNotes(notes);
         print("inserted");
       } else {
         //update
@@ -151,7 +160,7 @@ class _EditScreenState extends State<EditScreen> {
             addedTime: widget.notes["addedTime"],
             editedTime: new DateTime.now().toIso8601String(),
             isPinned: isPinned);
-        await db.updateNotes(notes);
+        await repository.updateNotes(notes);
         print("updated");
       }
     }
@@ -212,7 +221,7 @@ class _EditScreenState extends State<EditScreen> {
 
   void deleteNotes() async {
     if (widget.notes != null) {
-      await db.deleteNotes(widget.notes["id"]);
+      repository.deleteNotes(widget.notes["id"]);
     }
   }
 }

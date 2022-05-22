@@ -1,5 +1,5 @@
 class Notes {
-  int id = 0;
+  int? id;
   String title;
   String notes;
   var addedTime;
@@ -7,7 +7,7 @@ class Notes {
   bool isPinned;
 
   Notes(
-      {this.id = 0,
+      {this.id,
       required this.title,
       required this.notes,
       required this.addedTime,
@@ -18,6 +18,7 @@ class Notes {
   // columns in the database.
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       'title': title,
       'notes': notes,
       'addedTime': addedTime,

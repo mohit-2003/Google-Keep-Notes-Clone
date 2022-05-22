@@ -33,15 +33,15 @@ class NotesDatabase {
   }
 
   // helper functions
-  Future<void> insertNotes(Notes notes) async {
+  Future<int> insert(Notes notes) async {
     Database db = await instance.database;
-    await db.insert("Notes", notes.toMap(),
+    return await db.insert("Notes", notes.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> updateNotes(Notes notes) async {
+  Future<int> update(Notes notes) async {
     Database db = await instance.database;
-    await db.update(
+    return await db.update(
       "Notes",
       notes.toMap(),
       where: "id = ?",
@@ -49,7 +49,7 @@ class NotesDatabase {
     );
   }
 
-  Future<void> upsertNotes(Notes notes) async {
+  Future<void> upsert(Notes notes) async {
     Database db = await instance.database;
     int res = await db.update(
       "Notes",
@@ -65,9 +65,9 @@ class NotesDatabase {
       print("updated");
   }
 
-  Future<void> deleteNotes(int notesId) async {
+  Future<int> delete(int notesId) async {
     Database db = await instance.database;
-    await db.delete(
+    return await db.delete(
       "Notes",
       where: "id = ?",
       whereArgs: [notesId],

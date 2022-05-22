@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_keep_notes_clone/database/sqlite_database/firebase_database/google_sign_in.dart';
 import 'package:google_keep_notes_clone/screens/edit_screen.dart';
 import 'package:google_keep_notes_clone/screens/loading_screen.dart';
 import 'package:google_keep_notes_clone/utils/colors.dart';
@@ -8,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import '../database/sqlite_database/NotesDatabase.dart';
+import '../database/sqlite_database/firebase/google_sign_in.dart';
 import '../widgets/navigation_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -92,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () {
                               setState(() {
                                 isListViewItem = !isListViewItem;
-                                getNotesList();
                               });
                             },
                             icon: new Icon(
@@ -105,11 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           new Container(
                             margin: EdgeInsets.only(left: 8),
                             child: new InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 final provider =
                                     Provider.of<GoogleSignInProvider>(context,
                                         listen: false);
-                                provider.logInWithGoogle();
+                                await provider.logInWithGoogle();
                               },
                               child: new CircleAvatar(
                                 backgroundImage: new NetworkImage(currentUser !=
