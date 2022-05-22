@@ -164,12 +164,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           closedColor: Colors.transparent,
                                           closedBuilder: (context, action) =>
                                               new NotesItem(
-                                                  notes: otherNotesList![index],
+                                                  notes:
+                                                      pinnedNotesList![index],
                                                   onClicked: action),
                                           openBuilder: (context, _) =>
                                               new EditScreen(
                                                   notes:
-                                                      otherNotesList![index]));
+                                                      pinnedNotesList![index]));
                                     }),
                               ),
                               new Visibility(
